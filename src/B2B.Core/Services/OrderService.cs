@@ -68,7 +68,7 @@ namespace B2B.Core.Services
                 return new OrderResult { Success = false, Message = $"Agent with ID {agentId} not found." };
             }
 
-            // Pre-validate all items and stock availability before initiating state mutations
+            // Pre-validate stock availability for all line items before creating the order
             var validatedItems = new List<(Item dbItem, int quantity)>();
             foreach (var itemDto in consolidatedItems)
             {
@@ -94,7 +94,7 @@ namespace B2B.Core.Services
                 validatedItems.Add((dbItem, itemDto.Quantity));
             }
 
-            // ATOMIC DATABASE TRANSACTION
+            // Execute order creation and stock deduction within a database transaction
             var strategy = _context.Database.CreateExecutionStrategy();
 
             return await strategy.ExecuteAsync(async () =>
@@ -118,7 +118,7 @@ namespace B2B.Core.Services
 
                     foreach (var (dbItem, quantity) in validatedItems)
                     {
-                        // Deduct stock
+                        // Update stock quantity
                         dbItem.StockQuantity -= quantity;
 
                         var detail = new OrderDetail

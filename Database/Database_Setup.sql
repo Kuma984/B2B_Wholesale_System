@@ -1,9 +1,6 @@
--- =========================================================================
--- B2B Wholesale Order Management System - Database Initialization Script
--- Subject: Software Engineering (FIT - TDTU)
--- Author: Group Assignment 2 Team
--- Target DBMS: Microsoft SQL Server 2019 / 2022 / LocalDB / Azure SQL
--- =========================================================================
+-- Database Initialization Script for B2B Wholesale Order Management System
+-- Group 02 - Software Engineering (FIT - TDTU)
+-- Members: Trịnh Đức Long (524K0021), Trần Hoàng Anh (524K0015), Võ Thị Mỹ Duyên (523V0016)
 
 USE master;
 GO
@@ -17,7 +14,7 @@ GO
 USE B2BWholesaleDB;
 GO
 
--- 1. DROP EXISTING TABLES IN REVERSE DEPENDENCY ORDER
+-- Drop existing tables if they exist
 IF OBJECT_ID('dbo.OrderDetail', 'U') IS NOT NULL DROP TABLE dbo.OrderDetail;
 IF OBJECT_ID('dbo.[Order]', 'U') IS NOT NULL DROP TABLE dbo.[Order];
 IF OBJECT_ID('dbo.Item', 'U') IS NOT NULL DROP TABLE dbo.Item;
@@ -25,7 +22,7 @@ IF OBJECT_ID('dbo.Agent', 'U') IS NOT NULL DROP TABLE dbo.Agent;
 IF OBJECT_ID('dbo.Users', 'U') IS NOT NULL DROP TABLE dbo.Users;
 GO
 
--- 2. CREATE TABLE: Users
+-- Users table: login credentials, roles, and lockout
 CREATE TABLE dbo.Users (
     UserID INT IDENTITY(1,1) PRIMARY KEY,
     UserName NVARCHAR(50) NOT NULL UNIQUE,
@@ -36,7 +33,7 @@ CREATE TABLE dbo.Users (
 );
 GO
 
--- 3. CREATE TABLE: Agent
+-- Agent table: wholesale customer profiles
 CREATE TABLE dbo.Agent (
     AgentID INT IDENTITY(1,1) PRIMARY KEY,
     AgentName NVARCHAR(100) NOT NULL,
@@ -45,7 +42,7 @@ CREATE TABLE dbo.Agent (
 );
 GO
 
--- 4. CREATE TABLE: Item (Catalog & Inventory)
+-- Item table: catalog products and stock quantities
 CREATE TABLE dbo.Item (
     ItemID INT IDENTITY(1,1) PRIMARY KEY,
     ItemName NVARCHAR(150) NOT NULL,
@@ -55,7 +52,7 @@ CREATE TABLE dbo.Item (
 );
 GO
 
--- 5. CREATE TABLE: [Order] (Master)
+-- Order table: order headers
 CREATE TABLE dbo.[Order] (
     OrderID INT IDENTITY(1,1) PRIMARY KEY,
     OrderDate DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
@@ -67,7 +64,7 @@ CREATE TABLE dbo.[Order] (
 );
 GO
 
--- 6. CREATE TABLE: OrderDetail (Details)
+-- OrderDetail table: itemized order line items
 CREATE TABLE dbo.OrderDetail (
     ID INT IDENTITY(1,1) PRIMARY KEY,
     OrderID INT NOT NULL,
@@ -81,12 +78,9 @@ CREATE TABLE dbo.OrderDetail (
 );
 GO
 
--- =========================================================================
--- 7. SEED DATA (20 realistic rows per table)
--- =========================================================================
+-- Seed sample data: 20 rows per table
 
--- Seed Users: Admin accounts (password: Admin@123 -> SHA256: 240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9)
---             Agent accounts (password: Agent@123 -> SHA256: 7d10e8d04e5d6d45e994e77dd6ab74f1778c187bc9568ab40c112521c7dcf115)
+-- Seed Users: Admin accounts (Admin@123) and Agent accounts (Agent@123)
 INSERT INTO dbo.Users (UserName, Email, Password, Lock, Role) VALUES
 ('admin_main', 'admin@b2bwholesale.vn', 'Admin@123', 0, 'Admin'),
 ('warehouse_lead', 'wh_lead@b2bwholesale.vn', 'Admin@123', 0, 'Admin'),
@@ -110,7 +104,7 @@ INSERT INTO dbo.Users (UserName, Email, Password, Lock, Role) VALUES
 ('agent_locked01', 'inactive@oldagent.com', 'Agent@123', 1, 'Agent');
 GO
 
--- Seed Agent
+-- Seed Agent records
 INSERT INTO dbo.Agent (AgentName, Address, Phone) VALUES
 (N'Red River Trading JSC', N'128 Pho Hue, Hai Ba Trung, Ha Noi', '024-3822-1101'),
 (N'Saigon Wholesale & Distribution', N'45 Nguyen Hue, District 1, Ho Chi Minh City', '028-3914-2202'),
@@ -134,7 +128,7 @@ INSERT INTO dbo.Agent (AgentName, Address, Phone) VALUES
 (N'Vinh City Central Warehouse', N'89 Le Duan, Trung Do, Vinh, Nghe An', '0238-383-2020');
 GO
 
--- Seed Item
+-- Seed Item records
 INSERT INTO dbo.Item (ItemName, Size, Price, StockQuantity) VALUES
 (N'A4 Multipurpose Copy Paper 80gsm (Box of 5 Reams)', N'Box (5 Reams)', 245000, 450),
 (N'Premium Ballpoint Pen 0.7mm Blue (Box of 50)', N'Box (50 pcs)', 150000, 1200),
@@ -158,7 +152,7 @@ INSERT INTO dbo.Item (ItemName, Size, Price, StockQuantity) VALUES
 (N'Digital Platform Weighing Scale 300kg', N'Unit', 1750000, 28);
 GO
 
--- Seed [Order]
+-- Seed Order records
 INSERT INTO dbo.[Order] (OrderDate, AgentID, OrderStatus) VALUES
 ('2026-10-01 08:30:00', 1, 'Delivered'),
 ('2026-10-03 09:15:00', 2, 'Delivered'),
@@ -182,7 +176,7 @@ INSERT INTO dbo.[Order] (OrderDate, AgentID, OrderStatus) VALUES
 ('2026-11-14 09:30:00', 5, 'Cancelled');
 GO
 
--- Seed OrderDetail
+-- Seed OrderDetail recordsds
 INSERT INTO dbo.OrderDetail (OrderID, ItemID, Quantity, UnitAmount) VALUES
 (1, 1, 10, 245000),
 (1, 2, 5, 150000),
@@ -211,5 +205,5 @@ INSERT INTO dbo.OrderDetail (OrderID, ItemID, Quantity, UnitAmount) VALUES
 (15, 8, 4, 1250000);
 GO
 
-PRINT '=== B2B Wholesale Database and Seed Data Setup Completed Successfully! ===';
+PRINT 'B2B Wholesale Database initialized successfully with sample data.';
 GO

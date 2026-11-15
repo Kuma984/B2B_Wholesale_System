@@ -133,7 +133,7 @@ namespace B2B.Web.Controllers
                 Quantity = c.Quantity
             }).ToList();
 
-            // EXECUTE ATOMIC TRANSACTION WITH STOCK DEDUCTION
+            // Execute order placement and inventory deduction
             var result = await _orderService.PlaceOrderAsync(agentId.Value, orderItems);
 
             if (!result.Success)
@@ -142,7 +142,7 @@ namespace B2B.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Clear cart upon successful transactional commit
+            // Clear cart after checkout completes
             HttpContext.Session.Remove(CartSessionKey);
             TempData["SuccessMessage"] = $"Order #{result.OrderID} has been placed successfully! Total: {result.TotalAmount:N0} VND.";
 

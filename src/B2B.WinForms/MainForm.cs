@@ -68,7 +68,7 @@ namespace B2B.WinForms
             this.MainMenuStrip = menuStrip;
             this.Controls.Add(menuStrip);
 
-            // Status Strip with Copyright label (Lab 1 requirement)
+            // Status strip
             var statusStrip = new StatusStrip();
             var lblStatusUser = new ToolStripStatusLabel($"User: {_currentUser.UserName} | Role: {_currentUser.Role} | ") { Spring = false };
             var lblCopyright = new ToolStripStatusLabel("Developed by Tran Hoang Anh (524K0015) - SE Lab Assignment 2") { Spring = true, TextAlign = ContentAlignment.MiddleRight, ForeColor = Color.DarkSlateBlue };
@@ -550,11 +550,11 @@ namespace B2B.WinForms
             manifestText += "----------------------------------------------------------------------\n" +
                            $"TOTAL UNITS SHIPPED:  {totalUnits} Units\n" +
                            $"TOTAL INVOICE VALUE:  {totalAmount:N0} VND\n" +
-                            "======================================================================\n" +
+                            "----------------------------------------------------------------------\n" +
                             "WAREHOUSE DISPATCH VERIFICATION:\n" +
-                            "Prepared By:  __________________________    Date: __________________\n" +
-                            "Carrier Signature: ______________________    Vehicle Plate: _________\n" +
-                            "======================================================================\n";
+                            "Prepared By:        ____________________    Date: __________________\n" +
+                            "Carrier Signature:  ____________________    Plate: _________________\n" +
+                            "----------------------------------------------------------------------\n";
 
             // Save to temporary file and open in default viewer / print preview
             var tempFile = Path.Combine(Path.GetTempPath(), $"Shipping_Manifest_Order_{order.OrderID}.txt");

@@ -19,7 +19,7 @@ namespace B2B.Core.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Table mappings matching assignment schema
+            // Configure entity table mappings and relationships
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("Users");
