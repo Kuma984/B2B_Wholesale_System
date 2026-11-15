@@ -1,63 +1,39 @@
-========================================================================
-SOFTWARE ENGINEERING LAB ASSIGNMENT 2: B2B WHOLESALE MANAGEMENT SYSTEM
-========================================================================
-Instructor: Ky-Trung Pham (tg_phamthaikytrung@tdtu.edu.vn) | FIT - TDTU
-Academic Year: Sem 1_2627
+Software Engineering Lab Assignment 2 - B2B Wholesale Management System
+Course: Sem 1_2627 - Faculty of Information Technology, TDTU
+Instructor: Mr. Ky-Trung Pham (tg_phamthaikytrung@tdtu.edu.vn)
 
-1. GITHUB REPOSITORY
-------------------------------------------------------------------------
+1. GitHub Repository
 Repository URL: https://github.com/Kuma984/B2B_Wholesale_System.git
-Web Application Option Chosen: Option C - ASP.NET Core MVC (Code First)
+Web Application Option: Option C - ASP.NET Core MVC (Code First)
 
-2. TEAM MEMBERS & PERCENTAGE CONTRIBUTION
-------------------------------------------------------------------------
-Member 1 (Project Lead / Core Architect & QA Lead):
-- Full Name: Trịnh Đức Long
-- Student ID: 524K0021
-- GitHub: https://github.com/Kuma984
-- Contribution: 35%
-- Features Built: Database Schema & Seeds (Task 2a), Centralized Configuration (Task 6a), xUnit Unit Testing Suite (Task 5.1), Git Collaboration & PR Review (Task 6b), Documentation & Packaging (Task 6c).
+2. Team Members and Division of Labor
+- Trịnh Đức Long (524K0021) - Project Lead / Core Architect & QA Lead: 35%
+  Tasks: Database Schema & Seeds (Task 2a), Centralized Configuration (Task 6a), xUnit Unit Testing Suite (Task 5.1), Git Collaboration & PR Review (Task 6b), Documentation & Packaging (Task 6c).
+- Trần Hoàng Anh (524K0015) - WinForms Desktop Specialist: 30%
+  Tasks: Secure Admin Login Form (Task 1.1), Items CRUD & Stock Restocking (Task 1.2), Agent Management & Order Processing (Task 1.2), Shipping Manifest Report (Task 1.3), Sales Analytics Dashboard (Task 1.4).
+- Võ Thị Mỹ Duyên (523V0016) - Web Portal Specialist: 35%
+  Tasks: Agent Web Authentication (Task 3.1), Product Catalog & Live Stock Status (Task 3.2), Master-Detail Shopping Cart & Atomic Order Placement (Task 3.2), My Orders History & Printable Invoice (Task 3.3), Responsive Bootstrap 5 UI (Task 3.4).
 
-Member 2 (WinForms Desktop Specialist):
-- Full Name: Trần Hoàng Anh
-- Student ID: 524K0015
-- GitHub: https://github.com/SimonAnh
-- Contribution: 30%
-- Features Built: Secure Admin Login Form (Task 1.1), Items CRUD & Stock Restocking (Task 1.2), Agent Management & Order Status Processing (Task 1.2), Shipping Manifest Report (Task 1.3), Sales Analytics & Low-Stock Dashboard (Task 1.4), Database Integrity Verification (Task 2b).
+Total Contribution: 100%
 
-Member 3 (Web Portal Specialist):
-- Full Name: Võ Thị Mỹ Duyên
-- Student ID: 523V0016
-- GitHub: https://github.com/dien131
-- Contribution: 35%
-- Features Built: Agent Web Authentication (Task 3.1), Product Catalog & Live Stock Status (Task 3.2), Master-Detail Shopping Cart & Atomic Database Transaction Order Placement (Task 3.2), My Orders History & Dedicated Printable Invoice (Task 3.3), Responsive Bootstrap 5 UI & DataTables (Task 3.4).
+3. Database Setup Instructions
+1. Open SQL Server Management Studio (SSMS) or Azure Data Studio and connect to (localdb)\mssqllocaldb (or .\SQLEXPRESS).
+2. Open and run Database/Database_Setup.sql.
+   This script creates the B2BWholesaleDB database, sets up all 5 tables (Users, Agent, Item, [Order], OrderDetail), adds foreign keys and CHECK constraints, and seeds 20 realistic records per table.
+3. Check the connection strings:
+   - WinForms: src/B2B.WinForms/App.config -> key "B2BDatabase"
+   - Web: src/B2B.Web/appsettings.json -> ConnectionStrings:"B2BDatabase"
+   Both use: Server=(localdb)\mssqllocaldb;Database=B2BWholesaleDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;
 
-TOTAL CONTRIBUTION: 100%
-
-3. DATABASE CONFIGURATION INSTRUCTIONS
-------------------------------------------------------------------------
-Step 1: Open SQL Server Management Studio (SSMS) or Azure Data Studio.
-Step 2: Connect to your Microsoft SQL Server instance (e.g. (localdb)\mssqllocaldb, .\SQLEXPRESS, or localhost).
-Step 3: Open and execute the script:
-        Database/Database_Setup.sql
-
-Step 4: Verify Connection Strings:
-- For WinForms: 'src/B2B.WinForms/App.config'
-- For Web App: 'src/B2B.Web/appsettings.json'
-
-4. DEMO CREDENTIALS
-------------------------------------------------------------------------
-- Warehouse Admin Account (WinForms):
+4. Demo Accounts
+- Back-Office Administrator (WinForms):
   Username: admin_main
   Password: Admin@123
-
-- Distributor Agent Account (Web Portal):
-  Username: agent_hanoi01 (or agent_hcm01)
+- Wholesale Agent (Web Portal):
+  Username: agent_hanoi01
   Password: Agent@123
 
-5. HOW TO RUN UNIT TESTS
-------------------------------------------------------------------------
-Open a terminal in the root solution folder and run:
+5. Running Unit Tests
+In the solution directory, run:
   dotnet test
-All 13 unit tests will execute and pass (100% pass rate).
-========================================================================
+All 13 unit tests in tests/B2B.Tests will execute and pass (100% pass rate).
