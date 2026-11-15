@@ -1,0 +1,116 @@
+@model List<B2B.Web.Models.CartItemViewModel>
+@{
+    ViewData["Title"] = "Order Cart & Checkout";
+    decimal orderTotal = Model.Sum(x => x.Subtotal);
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold"><i class="bi bi-cart3 me-2 text-primary"></i>Master-Detail Order Cart</h2>
+    <p class="text-muted">Review items and quantities before submitting your wholesale order.</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card shadow-sm border-0 text-center py-5">
+        <div class="card-body">
+            <i class="bi bi-cart-x text-muted" style="font-size: 3rem;"></i>
+            <h4 class="mt-3 text-secondary">Your order cart is currently empty.</h4>
+            <p class="text-muted">Browse our catalog to select wholesale products.</p>
+            <a asp-controller="Catalog" asp-action="Index" class="btn btn-primary mt-2">
+                <i class="bi bi-arrow-left me-1"></i>Go to Catalog
+            </a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold">Order Line Items (@Model.Count items)</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Item</th>
+                                <th>Size</th>
+                                <th>Price</th>
+                                <th style="width: 140px;">Quantity</th>
+                                <th>Subtotal</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var line in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@line.ItemName</strong><br />
+                                        <small class="text-muted">ID: #@line.ItemID | Available: @line.AvailableStock</small>
+                                    </td>
+                                    <td>@line.Size</td>
+                                    <td>@line.Price.ToString("N0") VND</td>
+                                    <td>
+                                        <form asp-action="UpdateQuantity" method="post" class="d-flex gap-1">
+                                            <input type="hidden" name="itemId" value="@line.ItemID" />
+                                            <input type="number" name="quantity" class="form-control form-control-sm" value="@line.Quantity" min="1" max="@line.AvailableStock" onchange="this.form.submit()" />
+                                        </form>
+                                    </td>
+                                    <td class="fw-bold text-primary">@line.Subtotal.ToString("N0") VND</td>
+                                    <td class="text-end">
+                                        <form asp-action="Remove" method="post" class="d-inline">
+                                            <input type="hidden" name="itemId" value="@line.ItemID" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Remove line">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0 fw-bold">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Total Line Items:</span>
+                        <span class="fw-semibold">@Model.Count lines</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Total Units Ordered:</span>
+                        <span class="fw-semibold">@Model.Sum(x => x.Quantity) units</span>
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="fs-5 fw-bold">Order Total:</span>
+                        <span class="fs-5 fw-bold text-primary">@orderTotal.ToString("N0") VND</span>
+                    </div>
+
+                    <div class="alert alert-info small mb-3">
+                        <i class="bi bi-shield-check me-1"></i>
+                        <strong>Atomic Transaction:</strong> Orders are validated in real-time. If stock is insufficient, the transaction rolls back automatically.
+                    </div>
+
+                    <form asp-action="Checkout" method="post">
+                        <button type="submit" class="btn btn-success w-100 py-3 fw-bold fs-6 shadow-sm">
+                            <i class="bi bi-check2-circle me-1"></i>Place Order & Commit Transaction
+                        </button>
+                    </form>
+
+                    <a asp-controller="Catalog" asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">
+                        <i class="bi bi-plus-circle me-1"></i>Add More Items
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
