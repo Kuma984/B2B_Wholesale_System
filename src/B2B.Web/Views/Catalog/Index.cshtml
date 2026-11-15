@@ -1,0 +1,86 @@
+@model IEnumerable<B2B.Core.Entities.Item>
+@{
+    ViewData["Title"] = "Wholesale Catalog";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="bi bi-grid-3x3-gap me-2 text-primary"></i>Wholesale Catalog</h2>
+        <p class="text-muted mb-0">Browse current inventory and select items for bulk wholesale ordering.</p>
+    </div>
+    <div>
+        <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-primary shadow-sm">
+            <i class="bi bi-cart3 me-1"></i>View Cart / Checkout
+        </a>
+    </div>
+</div>
+
+<!-- Search & Filters -->
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" name="search" class="form-control" placeholder="Search by item name or packaging size..." value="@ViewData["Search"]" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select name="filter" class="form-select">
+                    <option value="">All Inventory Statuses</option>
+                    <option value="in_stock" selected="@(ViewData["Filter"]?.ToString() == "in_stock")">In Stock Only (> 0 units)</option>
+                    <option value="low_stock" selected="@(ViewData["Filter"]?.ToString() == "low_stock")">Low Stock Items (< 200 units)</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100 fw-semibold">Filter</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Products Grid -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="badge bg-secondary">ID #@item.ItemID</span>
+                        @if (item.StockQuantity > 100)
+                        {
+                            <span class="badge bg-success">In Stock (@item.StockQuantity units)</span>
+                        }
+                        else if (item.StockQuantity > 0)
+                        {
+                            <span class="badge bg-warning text-dark">Low Stock (@item.StockQuantity units)</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Out of Stock</span>
+                        }
+                    </div>
+
+                    <h5 class="card-title fw-bold text-dark">@item.ItemName</h5>
+                    <p class="text-muted small mb-2"><i class="bi bi-box me-1"></i>Packaging: <strong>@item.Size</strong></p>
+                    
+                    <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                        <span class="fs-5 fw-bold text-primary">@item.Price.ToString("N0") VND</span>
+                    </div>
+
+                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="mt-3">
+                        <input type="hidden" name="itemId" value="@item.ItemID" />
+                        <div class="input-group">
+                            <input type="number" name="quantity" class="form-control" value="1" min="1" max="@Math.Max(1, item.StockQuantity)" @(item.StockQuantity <= 0 ? "disabled" : "") />
+                            <button type="submit" class="btn btn-primary" @(item.StockQuantity <= 0 ? "disabled" : "")>
+                                <i class="bi bi-cart-plus me-1"></i>Add
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
