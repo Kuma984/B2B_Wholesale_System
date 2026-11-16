@@ -19,7 +19,7 @@ The **B2B Wholesale Order Management System** is a dual-platform software soluti
 
 | Member | Student ID | GitHub Account | Role | Assigned Modules & Tasks | Workload Share |
 | :--- | :--- | :--- | :--- | :--- | :---: |
-| **Project Lead (You)** | *(Your ID)* | [@Kuma984](https://github.com/Kuma984) | Core Architect, QA & DevOps | • Database Schema & 20+ Seed Rows per table (`Task 2a`)<br>• Solution Structure & Domain Entities<br>• Centralized Configuration (`Task 6a`)<br>• xUnit Business Logic Test Project (`Task 5.1`)<br>• Git Strategy, PR Reviews & Documentation (`Task 6b & 6c`) | **35%** |
+| **Trịnh Đức Long** | 524K0021 | [@Kuma984](https://github.com/Kuma984) | Core Architect, QA & DevOps | • Database Schema & 20+ Seed Rows per table (`Task 2a`)<br>• Solution Structure & Domain Entities<br>• Centralized Configuration (`Task 6a`)<br>• xUnit Business Logic Test Project (`Task 5.1`)<br>• Git Strategy, PR Reviews & Documentation (`Task 6b & 6c`) | **35%** |
 | **Trần Hoàng Anh** | 524K0015 | [@SimonAnh](https://github.com/SimonAnh) | WinForms Desktop Specialist | • Admin Secure Login Form (`Task 1.1`)<br>• Items CRUD & Stock Restocking (`Task 1.2`)<br>• Agent Management & Order Status Processing (`Task 1.2`)<br>• Shipping Manifest Report (PDF/RDLC) (`Task 1.3`)<br>• Data Analytics & Filter Dashboard (`Task 1.4`)<br>• DB Integrity verification (`Task 2b`) | **30%** |
 | **Võ Thị Mỹ Duyên** | 523V0016 | [@dien131](https://github.com/dien131) | Web Portal Specialist | • Agent Web Authentication (`Task 3.1`)<br>• Catalog View & Product Browsing (`Task 3.2`)<br>• Master-Detail Order Placement with DB Transaction (`Task 3.2`)<br>• "My Orders" History & Printable Invoice (`Task 3.3`)<br>• Responsive Bootstrap UI & DataTables (`Task 3.4`) | **35%** |
 
